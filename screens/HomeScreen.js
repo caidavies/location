@@ -1,6 +1,6 @@
 // HomeScreen.js
 import React, { useEffect, useState } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, StyleSheet} from 'react-native';
 import Card from '../components/Card';
 import SkeletonLoader from '../components/SkeletonLoader';
 import { getListings } from '../firebaseFunctions';
@@ -20,15 +20,15 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       {isLoading ? (
         <SkeletonLoader />
       ) : (
-        <FlatList
+        <FlatList style={styles.cardContainer}
           data={listings}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <Card title={item.title} content={item.description} />
+            <Card title={item.title} content={item.description} images={item.images[0]} />
           )}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
@@ -42,5 +42,16 @@ const HomeScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#121212',
+    paddingHorizontal: 20,
+    height: '100%',
+  },
+  cardContainer: {
+    paddingVertical: 40,
+  }
+});
 
 export default HomeScreen;
