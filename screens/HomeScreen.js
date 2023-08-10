@@ -5,6 +5,21 @@ import Card from '../components/Card';
 import SkeletonLoader from '../components/SkeletonLoader';
 import { getListings } from '../firebaseFunctions';
 
+const getMoviesFromApiAsync = async () => {
+  try {
+    const response = await fetch(
+      'http://caid1.sg-host.com/wp-json/wp/v2/listing/',
+    );
+    const json = await response.json();
+      console.log(json);
+    return json.movies;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+getMoviesFromApiAsync();
+
 const HomeScreen = () => {
   const [listings, setListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
