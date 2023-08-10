@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -13,5 +13,16 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function getListings(db) {
+  const listingsCol = collection(db, "listings");
+  const listingSnapshot = await getDocs(listingsCol);
+  const listingList = listingSnapshot.docs.map(doc => doc.data());
+  return listingList;
+}
+
 // For more information on how to access Firebase in your project,
 // see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase
+
+export default FireBaseConfig

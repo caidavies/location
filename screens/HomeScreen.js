@@ -1,30 +1,46 @@
-import React from 'react';
-import { ScrollView, View, Text, Button, StyleSheet } from 'react-native';
-import Card from '../components/Card'; // Adjust the path as needed
+// HomeScreen.js
+import React, { useEffect, useState } from 'react';
+import { View, FlatList } from 'react-native';
+import Card from '../components/Card';
+import SkeletonLoader from '../components/SkeletonLoader';
+import { getListings } from '../firebaseFunctions';
 
-function HomeScreen({ navigation }) {
+const HomeScreen = () => {
+  const [listings, setListings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchListings() {
+      const listingData = await getListings();
+      setListings(listingData);
+      setIsLoading(false);
+    }
+
+    fetchListings();
+  }, []);
+
   return (
-    <ScrollView>
+    <View>
+      {isLoading ? (
+        <SkeletonLoader />
+      ) : (
+        <FlatList
+          data={listings}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <Card title={item.title} content={item.description} />
+          )}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              <Text>No listings available</Text>
+            </View>
+          )}
+        />
 
-    <View style={styles.container}>
-      <Card title="Card Title" content="This is the card's content." />
+
+      )}
     </View>
-      {/* <Button
-        title="Go to Listing"
-        onPress={() => navigation.navigate('Listing')}
-      /> */}
-    </ScrollView>
   );
-}
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
+};
 
 export default HomeScreen;
