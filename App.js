@@ -53,15 +53,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function getCities(db) {
-  const citiesCol = collection(db, "listings");
-  const citySnapshot = await getDocs(citiesCol);
-  const cityList = citySnapshot.docs.map(doc => doc.data());
-  console.log(cityList);
-  return cityList;
+async function getListings(db) {
+  const listingsCol = collection(db, "listings");
+  const listingSnapshot = await getDocs(listingsCol);
+  const listingList = listingSnapshot.docs.map(doc => doc.data());
+  return listingList;
 }
 
-getCities(db);
 // For more information on how to access Firebase in your project,
 // see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase
 
