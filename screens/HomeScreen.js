@@ -8,17 +8,20 @@ import { getListings } from '../firebaseFunctions';
 const getMoviesFromApiAsync = async () => {
   try {
     const response = await fetch(
-      'http://caid1.sg-host.com/wp-json/wp/v2/listing/',
+      'http://caid1.sg-host.com/wp-json/wp/v2/listing',
     );
     const json = await response.json();
-      console.log(json);
-    return json.movies;
+
+    // Extract and log only the 'acf' data
+    const acfDataList = json.map(item => item.acf);
+    console.log(acfDataList);
   } catch (error) {
     console.error(error);
   }
 };
 
-getMoviesFromApiAsync();
+let data = getMoviesFromApiAsync();
+
 
 const HomeScreen = () => {
   const [listings, setListings] = useState([]);
